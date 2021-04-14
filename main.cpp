@@ -12,6 +12,15 @@ std :: mt19937 rd(std :: chrono :: system_clock :: now().time_since_epoch().coun
 const int NUMBER_OF_STACKS = 8;
 const int NUMBER_OF_CARD_VALUES = 9;
 
+int get_number_of_consecutive_cards(const std::vector<int>& stack, int number_of_last_closed_card_) {
+    if (stack.empty()) {
+        return 0;
+    }
+
+    int number_of_consecutive_cards = 1;
+    for (int i = static_cast<int>(stack.size()) - 2; i >= 0 && i > number_of_last_closed_card_ && stack[i] == stack[i + 1] + 1; ++number_of_consecutive_cards, --i) {}
+}
+
 class StackOfCards {
 public:
     StackOfCards(std::string stack) {
@@ -40,8 +49,11 @@ public:
     }
 
     int HowManyCardsCanBeTransferedTo(const StackOfCards& to) const {
-        if (to.stack_.empty()) {
+        if (stack_.empty()) {
             return 0;
+        }
+        if (to.stack_.empty()) {
+            return get_number_of_consecutive_cards(stack_, number_of_last_closed_card_);
         }
 
         bool can_remove_cards_starting_ith = true;
@@ -78,12 +90,11 @@ private:
             return;
         }
 
-        int number_of_consecutive_cards = 1;
-        for (int i = static_cast<int>(stack_.size()) - 2; i >= 0 && i > number_of_last_closed_card_ && stack_[i] == stack_[i + 1] + 1; ++number_of_consecutive_cards, --i) {}
+        int number_of_consecutive_cards = get_number_of_consecutive_cards(stack_, number_of_last_closed_card_);
 
         if (number_of_consecutive_cards == NUMBER_OF_CARD_VALUES) {
             for (int i = 0; i < number_of_consecutive_cards; ++i) {
-            	stack_.pop_back();
+                stack_.pop_back();
             }
             number_of_last_closed_card_ = std::min(number_of_last_closed_card_, static_cast<int>(stack_.size()) - 2);
         }
