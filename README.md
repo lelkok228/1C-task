@@ -1,4 +1,4 @@
-# First practical work in Formal Languages and Broadcasts
+# 1C-task
 
 #### Задача:
 
@@ -35,4 +35,3 @@ Q Q Q J J J J 10 10
 10 10 9 9 9 9 8 8 8
 8 7 7 7 7 6 6 6 6
 ```
-
